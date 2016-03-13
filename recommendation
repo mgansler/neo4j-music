@@ -1,0 +1,1 @@
+MATCH (n:publication {title: "25"})<-[:BUYS]-(m:customer)-[t:BUYS]->(o:publication) RETURN o,count(t) as purchases ORDER BY purchases DESC
