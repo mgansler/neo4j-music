@@ -1,0 +1,4 @@
+MATCH (eve:customer {name: "Eve"})-[:BUYS]->(n:publication {title: "25"})<-[:BUYS]-(m:customer)-[t:BUYS]->(o:publication) 
+WHERE NOT (eve)-[:BUYS]->(o) 
+RETURN o,count(t) as purchases 
+ORDER BY purchases DESC
