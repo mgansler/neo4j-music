@@ -1,0 +1,2 @@
+MATCH (eve:customer {name: "Eve"})-[:BUYS]->(n) 
+RETURN n
