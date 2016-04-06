@@ -1,0 +1,50 @@
+---
+geometry: top=1cm, bottom=1.5cm, left=1cm, right=1cm
+...
+
+# Nodes
+
++ artist
++ publication
++ song
++ label
++ customer
+
+# Relations
+
++ INCLUDES
++ PUBLISHES
++ PERFORMEDBY
++ BUYS
+
+# Playbook
+
+## Show Data
+match all return all
+
+## Show Subset
+match (s:song),(c:customer) return s,c
+
+## Show simple relation
+match (s:song)-[:PERFORMEDBY]->(a:artist) return s,a
+
+## One song is missing!
+match (s:song) where not (s)-[:PERFORMEDBY]-() return s
+
+## Add the relation
+match (s:song {title: "Hello"}),(a:artist {name: "Adele"}) create (s)-[:PERFORMEDBY]->(a) return a,s
+
+## Let's Check the result
+match (s:song)-[:PERFORMEDBY]->(a:artist) return s,a
+
+## Recommendation for anonymous
+match (n:publication {title: "25"})<-[:BUYS]-(m:customer)-[t:BUYS]->(o:publication) return o,count(t) as purchases order by purchases desc
+
+## Recommendation for known user
+match (eve:customer {name: "Eve"})-[:BUYS]->(n:publication {title: "25"})<-[:BUYS]-(m:customer)-[t:BUYS]->(o:publication) 
+WHERE NOT (eve)-[:BUYS]->(o) 
+return o,count(t) as purchases 
+order by purchases desc
+
+## Why the difference?
+match (c:customer {name: "Eve"})-[:BUYS]->(p:publication) return c,p
